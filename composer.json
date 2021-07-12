@@ -1,0 +1,18 @@
+{
+    "name": "totallyquiche/wordpress-site-banner",
+    "description": "Display custom content on every page of your WordPress site.",
+    "type": "wordpress-plugin",
+    "license": "GPL v3 or later",
+    "autoload": {
+        "psr-4": {
+            "Totallyquiche\\WordpressSiteBanner\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Brian Dady",
+            "email": "bndady@gmail.com"
+        }
+    ],
+    "require": {}
+}
