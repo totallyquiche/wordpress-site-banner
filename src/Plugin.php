@@ -3,8 +3,8 @@
 namespace TotallyQuiche\WordPressSiteBanner;
 
 use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
-use TotallyQuiche\WordPressSiteBanner\Taxonomies\Banner;
-use TotallyQuiche\WordPressSiteBanner\Terms\Banner\Standard;
+use TotallyQuiche\WordPressSiteBanner\Taxonomies\Types;
+use TotallyQuiche\WordPressSiteBanner\Terms\Types\Standard;
 
 class Plugin
 {
@@ -45,16 +45,16 @@ class Plugin
      */
     private function registerTaxonomies() : void
     {
-        (new Banner)->register();
+        (new Types)->register();
     }
 
     /**
-     * Register all Terms.
+     * Insert all Terms.
      *
      * @return void
      */
     private function insertTerms() : void
     {
-        (new Standard)->insert();
+        (new Standard)->insert(Types::$key);
     }
 }

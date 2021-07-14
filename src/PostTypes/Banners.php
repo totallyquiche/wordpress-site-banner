@@ -3,9 +3,17 @@
 namespace TotallyQuiche\WordPressSiteBanner\PostTypes;
 
 use TotallyQuiche\WordPressSiteBanner\Plugin;
+use TotallyQuiche\WordPressSiteBanner\Taxonomies\Banner;
 
 class Banners
 {
+    /**
+     * The key of this Post Type.
+     *
+     * @var string
+     */
+    public static string $key = 'banners';
+
     /**
      * The name of this Post Type.
      *
@@ -21,6 +29,13 @@ class Banners
     private string $singular_name = 'Banner';
 
     /**
+     * The description of this Post Type
+     *
+     * @var string
+     */
+    private string $description = 'Banners for displaying messages across your WordPress site.';
+
+    /**
      * Register the Post Type in WordPress.
      *
      * @return void
@@ -28,24 +43,17 @@ class Banners
     public function register() : void
     {
         register_post_type(
-            Plugin::$prefix . '_banners',
+            self::$key,
             [
-                'description' => 'Banners for displaying messages across your WordPress site.',
+                'description' => $this->description,
                 'public' => true,
                 'menu_icon' => 'dashicons-megaphone',
+                'rewrite' => false,
                 'labels' => [
                     'name' => $this->name,
                     'singular_name' => $this->singular_name,
                     'add_new_item' => 'Add New ' . $this->singular_name
-                ],
-                'taxonomies' => [
-                    'Banner'
-                ],
-                'supports' => [
-                    'title',
-                    'editor'
-                ],
-                'rewrite' => false
+                ]
             ]
         );
     }
