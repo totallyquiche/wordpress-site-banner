@@ -46,7 +46,14 @@ class Banners
             self::$key,
             [
                 'description' => $this->description,
-                'public' => false
+                'public' => true,
+                'menu_icon' => 'dashicons-megaphone',
+                'rewrite' => false,
+                'labels' => [
+                    'name' => $this->name,
+                    'singular_name' => $this->singular_name,
+                    'add_new_item' => 'Add New ' . $this->singular_name
+                ]
             ]
         );
     }

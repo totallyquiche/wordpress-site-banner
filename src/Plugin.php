@@ -6,8 +6,6 @@ use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
 use TotallyQuiche\WordPressSiteBanner\Taxonomies\Types;
 use TotallyQuiche\WordPressSiteBanner\Terms\Types\Standard;
 
-use TotallyQuiche\WordPressSiteBanner\Pages\Banners as BannersPage;
-
 class Plugin
 {
     /**
@@ -48,23 +46,6 @@ class Plugin
                 'insertTerms'
             ]
         );
-
-        add_action(
-            'admin_menu',
-            [
-                $this,
-                'addMenuPages'
-            ]
-        );
-    }
-
-    /**
-     * Add all menu pages.
-     *
-     * @return void
-     */
-    public function addMenuPages() {
-        (new BannersPage)->add();
     }
 
     /**

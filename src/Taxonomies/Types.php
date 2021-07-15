@@ -38,7 +38,18 @@ class Types
             self::$key,
             Banners::$key,
             [
+                'rewrite' => false,
                 'hierarchical' => true,
+                'show_ui' => true,
+                'labels' => [
+                    'name' => $this->name,
+                    'singular_name' => $this->singular_name,
+                    'search_items' => 'Search ' . $this->name,
+                    'parent_item' => 'Parent ' . $this->singular_name,
+                    'edit_item' => 'Edit ' . $this->singular_name,
+                    'add_new_item' => 'Add New ' . $this->singular_name,
+                    'back_to_items' => 'Go to ' . $this->name
+                ]
             ]
         );
     }
