@@ -6,6 +6,8 @@ use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
 use TotallyQuiche\WordPressSiteBanner\Taxonomies\Types;
 use TotallyQuiche\WordPressSiteBanner\Terms\Types\Standard;
 
+use TotallyQuiche\WordPressSiteBanner\Pages\Banners as BannersPage;
+
 class Plugin
 {
     /**
@@ -23,9 +25,46 @@ class Plugin
      */
     public function initialize() : void
     {
-        add_action('init', $this->registerPostTypes());
-        add_action('init', $this->registerTaxonomies());
-        add_action('init', $this->insertTerms());
+        add_action(
+            'init',
+            [
+                $this,
+                'registerPostTypes'
+            ]
+        );
+
+        add_action(
+            'init',
+            [
+                $this,
+                'registerTaxonomies'
+            ]
+        );
+
+        add_action(
+            'init',
+            [
+                $this,
+                'insertTerms'
+            ]
+        );
+
+        add_action(
+            'admin_menu',
+            [
+                $this,
+                'addMenuPages'
+            ]
+        );
+    }
+
+    /**
+     * Add all menu pages.
+     *
+     * @return void
+     */
+    public function addMenuPages() {
+        (new BannersPage)->add();
     }
 
     /**
@@ -33,7 +72,7 @@ class Plugin
      *
      * @return void
      */
-    private function registerPostTypes() : void
+    public function registerPostTypes() : void
     {
         (new Banners)->register();
     }
@@ -43,7 +82,7 @@ class Plugin
      *
      * @return void
      */
-    private function registerTaxonomies() : void
+    public function registerTaxonomies() : void
     {
         (new Types)->register();
     }
@@ -53,7 +92,7 @@ class Plugin
      *
      * @return void
      */
-    private function insertTerms() : void
+    public function insertTerms() : void
     {
         (new Standard)->insert(Types::$key);
     }
