@@ -54,6 +54,14 @@ class Plugin
             'admin_enqueue_scripts',
             [
                 $this,
+                'enqueueAdminStyles'
+            ]
+        );
+
+        add_action(
+            'wp_enqueue_scripts',
+            [
+                $this,
                 'enqueueStyles'
             ]
         );
@@ -98,13 +106,13 @@ class Plugin
     }
 
     /**
-     * Enqueue all scripts.
+     * Enqueue all admin styles.
      *
      * @param string $hook_suffix
      *
      * @return void
      */
-    public function enqueueStyles(string $hook_suffix) : void
+    public function enqueueAdminStyles(string $hook_suffix) : void
     {
         if (
             ($post_type = $_GET['post_type']) === Banners::$key ||
@@ -125,16 +133,41 @@ class Plugin
     }
 
     /**
+     * Enqueue all styles.
+     *
+     * @param string $hook_suffix
+     *
+     * @return void
+     */
+    public function enqueueStyles(string $hook_suffix) : void
+    {
+        wp_enqueue_style(
+            self::$prefix . '_default',
+           plugin_dir_url(__FILE__) . 'Assets/css/default.css'
+        );
+    }
+
+    /**
      * Show all banners.
      *
      * @return void
      */
     public function showBanners() : void
     {
-        $banner_id = Plugin::$prefix . '_banner';
-        $banner_title = 'Banner Title';
-        $banner_content = 'Banner Content';
+        $banners = get_posts(
+            [
+                'post_type' => Banners::$key,
+                'post_status' => 'publish',
+                'numberposts' => -1
+            ]
+        );
 
-        require(plugin_dir_path(__FILE__) . 'templates/Banners/Banner.php');
+        $banner_class = Plugin::$prefix . '_banner';
+
+        foreach ($banners as $banner) {
+            $banner_content = $banner->post_content;
+
+            require(plugin_dir_path(__FILE__) . 'templates/Banners/Banner.php');
+        }
     }
 }
