@@ -57,6 +57,14 @@ class Plugin
                 'enqueueStyles'
             ]
         );
+
+        add_action(
+            'wp_body_open',
+            [
+                $this,
+                'showBanners'
+            ]
+        );
     }
 
     /**
@@ -114,5 +122,19 @@ class Plugin
                     break;
             }
         }
+    }
+
+    /**
+     * Show all banners.
+     *
+     * @return void
+     */
+    public function showBanners() : void
+    {
+        $banner_id = Plugin::$prefix . '_banner';
+        $banner_title = 'Banner Title';
+        $banner_content = 'Banner Content';
+
+        require(plugin_dir_path(__FILE__) . 'templates/Banners/Banner.php');
     }
 }
