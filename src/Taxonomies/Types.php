@@ -40,7 +40,7 @@ class Types
             [
                 'rewrite' => false,
                 'hierarchical' => true,
-                'show_ui' => true,
+                'show_in_menu' => false,
                 'labels' => [
                     'name' => $this->name,
                     'singular_name' => $this->singular_name,

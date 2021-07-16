@@ -5,6 +5,9 @@ namespace TotallyQuiche\WordPressSiteBanner;
 use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
 use TotallyQuiche\WordPressSiteBanner\Taxonomies\Types;
 use TotallyQuiche\WordPressSiteBanner\Terms\Types\Standard;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\Add\Add as AddView;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\Banners\Banners as BannersView;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\Post\Post as PostView;
 
 class Plugin
 {
@@ -46,6 +49,14 @@ class Plugin
                 'insertTerms'
             ]
         );
+
+        add_action(
+            'admin_enqueue_scripts',
+            [
+                $this,
+                'enqueueStyles'
+            ]
+        );
     }
 
     /**
@@ -76,5 +87,32 @@ class Plugin
     public function insertTerms() : void
     {
         (new Standard)->insert(Types::$key);
+    }
+
+    /**
+     * Enqueue all scripts.
+     *
+     * @param string $hook_suffix
+     *
+     * @return void
+     */
+    public function enqueueStyles(string $hook_suffix) : void
+    {
+        if (
+            ($post_type = $_GET['post_type']) === Banners::$key ||
+            get_post_type($_GET['post']) === Banners::$key
+        ) {
+            switch ($hook_suffix) {
+                case 'edit.php':
+                    (new BannersView)->enqueueStyles();
+                    break;
+                case 'post-new.php':
+                    (new AddView)->enqueueStyles();
+                    break;
+                case 'post.php':
+                    (new PostView)->enqueueStyles();
+                    break;
+            }
+        }
     }
 }
