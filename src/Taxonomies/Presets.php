@@ -4,28 +4,28 @@ namespace TotallyQuiche\WordPressSiteBanner\Taxonomies;
 
 use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
 
-class Types
+class Presets
 {
     /**
      * The key of this Taxonomy.
      *
      * @var string
      */
-    public static string $key = 'types';
+    public static string $key = 'presets';
 
     /**
      * The name of this Taxonomy.
      *
      * @var string
      */
-    private string $name = 'Types';
+    public static string $name = 'Presets';
 
     /**
      * The singular name of this Taxonomy.
      *
      * @var string
      */
-    private string $singular_name = 'Type';
+    public static string $singular_name = 'Preset';
 
     /**
      * Register the Taxonomy in WordPress.
@@ -40,15 +40,15 @@ class Types
             [
                 'rewrite' => false,
                 'hierarchical' => true,
-                'show_in_menu' => false,
+                'public' => false,
                 'labels' => [
                     'name' => $this->name,
-                    'singular_name' => $this->singular_name,
-                    'search_items' => 'Search ' . $this->name,
-                    'parent_item' => 'Parent ' . $this->singular_name,
-                    'edit_item' => 'Edit ' . $this->singular_name,
-                    'add_new_item' => 'Add New ' . $this->singular_name,
-                    'back_to_items' => 'Go to ' . $this->name
+                    'singular_name' => self::$singular_name,
+                    'search_items' => 'Search ' . self::$name,
+                    'parent_item' => 'Parent ' . self::$singular_name,
+                    'edit_item' => 'Edit ' . self::$singular_name,
+                    'add_new_item' => 'Add New ' . self::$singular_name,
+                    'back_to_items' => 'Go to ' . self::$name
                 ]
             ]
         );

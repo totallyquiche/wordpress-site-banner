@@ -3,8 +3,11 @@
 namespace TotallyQuiche\WordPressSiteBanner;
 
 use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
-use TotallyQuiche\WordPressSiteBanner\Taxonomies\Types;
-use TotallyQuiche\WordPressSiteBanner\Terms\Types\Standard;
+use TotallyQuiche\WordPressSiteBanner\Taxonomies\Presets;
+use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Standard;
+use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Warning;
+use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Danger;
+use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Success;
 use TotallyQuiche\WordPressSiteBanner\Views\Banners\Add\Add as AddView;
 use TotallyQuiche\WordPressSiteBanner\Views\Banners\Banners\Banners as BannersView;
 use TotallyQuiche\WordPressSiteBanner\Views\Banners\Post\Post as PostView;
@@ -51,6 +54,14 @@ class Plugin
         );
 
         add_action(
+            'init',
+            [
+                $this,
+                'updatePost'
+            ]
+        );
+
+        add_action(
             'admin_enqueue_scripts',
             [
                 $this,
@@ -73,6 +84,14 @@ class Plugin
                 'showBanners'
             ]
         );
+
+        add_action(
+            'add_meta_boxes',
+            [
+                $this,
+                'addMetaBoxes'
+            ]
+        );
     }
 
     /**
@@ -92,7 +111,7 @@ class Plugin
      */
     public function registerTaxonomies() : void
     {
-        (new Types)->register();
+        (new Presets)->register();
     }
 
     /**
@@ -102,7 +121,10 @@ class Plugin
      */
     public function insertTerms() : void
     {
-        (new Standard)->insert(Types::$key);
+        (new Standard)->insert(Presets::$key);
+        (new Warning)->insert(Presets::$key);
+        (new Danger)->insert(Presets::$key);
+        (new Success)->insert(Presets::$key);
     }
 
     /**
@@ -158,16 +180,47 @@ class Plugin
             [
                 'post_type' => Banners::$key,
                 'post_status' => 'publish',
-                'numberposts' => -1
+                'numberposts' => -1,
             ]
         );
 
         $banner_class = Plugin::$prefix . '_banner';
 
         foreach ($banners as $banner) {
+            $terms = wp_get_post_terms(
+                $banner->ID,
+                Presets::$key
+            );
+
+            $term_name = Plugin::$prefix . '_' . $terms[0]->slug;
             $banner_content = $banner->post_content;
 
             require(plugin_dir_path(__FILE__) . 'templates/Banners/Banner.php');
         }
+    }
+
+    /**
+     * Add all meta boxes.
+     *
+     * @return void
+     */
+    public function addMetaBoxes() : void
+    {
+        if (
+            ($post_type = $_GET['post_type']) === Banners::$key ||
+            get_post_type($_GET['post']) === Banners::$key
+        ) {
+            (new PostView)->addMetaBoxes();
+        }
+    }
+
+    /**
+     * Handle post updates.
+     *
+     * @return void
+     */
+    public function updatePost() : void
+    {
+        (new PostView)->updatePost();
     }
 }

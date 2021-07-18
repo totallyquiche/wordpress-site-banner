@@ -1,33 +1,29 @@
 <?php declare(strict_types=1);
 
-namespace TotallyQuiche\WordPressSiteBanner\Terms\Types;
+namespace TotallyQuiche\WordPressSiteBanner\Terms\Presets;
 
-class Standard
+class Warning
 {
     /**
      * The name of this Term.
      *
      * @var string
      */
-    public static string $name = 'Standard';
+    public static string $name = 'Warning';
 
     /**
      * The slug for this Term.
      *
      * @var string
      */
-    private string $slug = 'standard';
+    private string $slug = 'warning';
 
     /**
      * The description of this Term.
      *
      * @var string
      */
-    private string $description = 'A standard type.';
-
-    /**
-     * The Taxonomy
-     */
+    private string $description = 'A warning banner.';
 
     /**
      * Create the Term and associate it with the specified Taxonomy.
