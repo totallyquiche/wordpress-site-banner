@@ -2,7 +2,7 @@
 
 namespace TotallyQuiche\WordPressSiteBanner\Terms\Presets;
 
-class Danger
+final class Danger
 {
     /**
      * The name of this Term.

@@ -24,16 +24,6 @@
     along with WordPress Site Banner. If not, see http://www.gnu.org/licenses/gpl-3.0.html.
 */
 
-use TotallyQuiche\WordPressSiteBanner\Plugin;
+require plugin_dir_path( __FILE__ ) . '/vendor/autoload.php';
 
-if (
-    is_readable(plugin_dir_path( __FILE__ ) . '/vendor/autoload.php')
-) {
-    require plugin_dir_path( __FILE__ ) . '/vendor/autoload.php';
-}
-
-(function ()
-    {
-        (new Plugin)->initialize();
-    }
-)();
+(new TotallyQuiche\WordPressSiteBanner\Plugin)->initialize();

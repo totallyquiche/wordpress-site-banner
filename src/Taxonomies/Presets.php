@@ -4,7 +4,7 @@ namespace TotallyQuiche\WordPressSiteBanner\Taxonomies;
 
 use TotallyQuiche\WordPressSiteBanner\PostTypes\Banners;
 
-class Presets
+final class Presets
 {
     /**
      * The key of this Taxonomy.

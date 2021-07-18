@@ -8,11 +8,11 @@ use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Standard;
 use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Warning;
 use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Danger;
 use TotallyQuiche\WordPressSiteBanner\Terms\Presets\Success;
-use TotallyQuiche\WordPressSiteBanner\Views\Banners\Add\Add as AddView;
-use TotallyQuiche\WordPressSiteBanner\Views\Banners\Banners\Banners as BannersView;
-use TotallyQuiche\WordPressSiteBanner\Views\Banners\Post\Post as PostView;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\PostNew\PostNew;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\Edit\Edit;
+use TotallyQuiche\WordPressSiteBanner\Views\Banners\Post\Post;
 
-class Plugin
+final class Plugin
 {
     /**
      * A string used as a unique prefix to distinguish this plugin's tables, etc.
@@ -29,69 +29,64 @@ class Plugin
      */
     public function initialize() : void
     {
-        add_action(
-            'init',
-            [
-                $this,
-                'registerPostTypes'
-            ]
-        );
+        $this->addInitActions();
+        $this->addAdminEnqueueScriptsActions();
+        $this->addWpEnqueueScriptsActions();
+        $this->addWpBodyOpenActions();
+        $this->addAddMetaBoxesActions();
+    }
 
-        add_action(
-            'init',
-            [
-                $this,
-                'registerTaxonomies'
-            ]
-        );
+    /**
+     * Add all init actions.
+     *
+     * @return void
+     */
+    private function addInitActions() : void
+    {
+        add_action('init', [$this, 'registerPostTypes']);
+        add_action('init', [$this, 'registerTaxonomies']);
+        add_action('init', [$this, 'insertTerms']);
+        add_action('init', [$this, 'updatePost']);
+    }
 
-        add_action(
-            'init',
-            [
-                $this,
-                'insertTerms'
-            ]
-        );
+    /**
+     * Add all admin_enqueue_scripts actions.
+     *
+     * @return void
+     */
+    private function addAdminEnqueueScriptsActions() : void
+    {
+        add_action('admin_enqueue_scripts', [$this, 'enqueueAdminStyles']);
+    }
 
-        add_action(
-            'init',
-            [
-                $this,
-                'updatePost'
-            ]
-        );
+    /**
+     * Add all wp_enqueue_scripts actions.
+     *
+     * @return void
+     */
+    private function addWpEnqueueScriptsActions() : void
+    {
+        add_action('wp_enqueue_scripts', [$this, 'enqueueStyles']);
+    }
 
-        add_action(
-            'admin_enqueue_scripts',
-            [
-                $this,
-                'enqueueAdminStyles'
-            ]
-        );
+    /**
+     * Add all wp_body_open actions.
+     *
+     * @return void
+     */
+    private function addWpBodyOpenActions() : void
+    {
+        add_action('wp_body_open', [$this, 'showBanners']);
+    }
 
-        add_action(
-            'wp_enqueue_scripts',
-            [
-                $this,
-                'enqueueStyles'
-            ]
-        );
-
-        add_action(
-            'wp_body_open',
-            [
-                $this,
-                'showBanners'
-            ]
-        );
-
-        add_action(
-            'add_meta_boxes',
-            [
-                $this,
-                'addMetaBoxes'
-            ]
-        );
+    /**
+     * Add all add_meta_boxes actions.
+     *
+     * @return void
+     */
+    private function addAddMetaBoxesActions() : void
+    {
+        add_action('add_meta_boxes', [$this, 'addMetaBoxes']);
     }
 
     /**
@@ -142,13 +137,13 @@ class Plugin
         ) {
             switch ($hook_suffix) {
                 case 'edit.php':
-                    (new BannersView)->enqueueStyles();
+                    (new Edit)->enqueueStyles();
                     break;
                 case 'post-new.php':
-                    (new AddView)->enqueueStyles();
+                    (new PostNew)->enqueueStyles();
                     break;
                 case 'post.php':
-                    (new PostView)->enqueueStyles();
+                    (new Post)->enqueueStyles();
                     break;
             }
         }
@@ -210,7 +205,7 @@ class Plugin
             ($post_type = $_GET['post_type']) === Banners::$key ||
             get_post_type($_GET['post']) === Banners::$key
         ) {
-            (new PostView)->addMetaBoxes();
+            (new Post)->addMetaBoxes();
         }
     }
 
@@ -221,6 +216,6 @@ class Plugin
      */
     public function updatePost() : void
     {
-        (new PostView)->updatePost();
+        (new Post)->updatePost();
     }
 }

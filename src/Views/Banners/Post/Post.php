@@ -5,7 +5,7 @@ namespace TotallyQuiche\WordPressSiteBanner\Views\Banners\Post;
 use TotallyQuiche\WordPressSiteBanner\Plugin;
 use TotallyQuiche\WordPressSiteBanner\Taxonomies\Presets;
 
-class Post
+final class Post
 {
     /**
      * Enqueue styles.

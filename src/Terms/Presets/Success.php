@@ -2,7 +2,7 @@
 
 namespace TotallyQuiche\WordPressSiteBanner\Terms\Presets;
 
-class Success
+final class Success
 {
     /**
      * The name of this Term.

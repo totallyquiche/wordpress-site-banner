@@ -2,10 +2,7 @@
 
 namespace TotallyQuiche\WordPressSiteBanner\PostTypes;
 
-use TotallyQuiche\WordPressSiteBanner\Plugin;
-use TotallyQuiche\WordPressSiteBanner\Taxonomies\Banner;
-
-class Banners
+final class Banners
 {
     /**
      * The key of this Post Type.

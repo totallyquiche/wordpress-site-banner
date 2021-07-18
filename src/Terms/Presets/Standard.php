@@ -2,7 +2,7 @@
 
 namespace TotallyQuiche\WordPressSiteBanner\Terms\Presets;
 
-class Standard
+final class Standard
 {
     /**
      * The name of this Term.
